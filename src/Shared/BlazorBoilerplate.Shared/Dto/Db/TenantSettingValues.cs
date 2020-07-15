@@ -15,6 +15,11 @@ namespace BlazorBoilerplate.Shared.Dto.Db
                 {
                     { SettingKey.MainConfiguration_Runtime,         new Tuple<string, SettingType>(BlazorRuntime.Server.ToString(), SettingType.String) },
 
+                    { SettingKey.ThemeConfiguration_PrimaryColor,       new Tuple<string, SettingType>("#ffffff", SettingType.String) },
+                    { SettingKey.ThemeConfiguration_SecondaryColor,     new Tuple<string, SettingType>("#ffffff", SettingType.String) },
+                    { SettingKey.ThemeConfiguration_OnPrimaryColor,     new Tuple<string, SettingType>("#ffffff", SettingType.String) },
+                    { SettingKey.ThemeConfiguration_OnSecondaryColor,   new Tuple<string, SettingType>("#ffffff", SettingType.String) },
+
                     { SettingKey.EmailConfiguration_SmtpServer,     new Tuple<string, SettingType>("smtp.gmail.com", SettingType.String) },
                     { SettingKey.EmailConfiguration_SmtpPort,       new Tuple<string, SettingType>("465", SettingType.Int) },
                     { SettingKey.EmailConfiguration_SmtpUsername,   new Tuple<string, SettingType>("email@domain.com", SettingType.String) },

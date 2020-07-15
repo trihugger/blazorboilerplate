@@ -5,6 +5,15 @@
         MainConfiguration_Runtime,
         MainConfiguration_Theme,
 
+        ThemeConfiguration_PrimaryColor,
+        ThemeConfiguration_SecondaryColor,
+        ThemeConfiguration_OnPrimaryColor,
+        ThemeConfiguration_OnSecondaryColor,
+        ThemeConfiguration_Background,
+
+        ThemeConfiguration_headerlogo,
+        ThemeConfiguration_smalllogo,
+
         EmailConfiguration_SmtpServer,
         EmailConfiguration_SmtpPort,
         EmailConfiguration_SmtpUsername,
