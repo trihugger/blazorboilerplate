@@ -11,6 +11,7 @@ using BlazorBoilerplate.Shared.Dto.Email;
 using BlazorBoilerplate.Shared.Localizer;
 using BlazorBoilerplate.Shared.Models.Account;
 using BlazorBoilerplate.Shared.Providers;
+using Humanizer;
 using IdentityModel;
 using IdentityServer4.Events;
 using IdentityServer4.Extensions;
@@ -857,10 +858,15 @@ namespace BlazorBoilerplate.Server.Managers
         }
         public async Task<ApplicationUser> RegisterNewUserAsync(string userName, string email, string password, bool requireConfirmEmail)
         {
+            string[] names = userName.Humanize().Split(" ");
+
             var user = new ApplicationUser
             {
                 UserName = userName,
-                Email = email
+                Email = email,
+                FullName = userName.Humanize(),
+                FirstName = names[0].Humanize(),
+                LastName = names[names.Length - 1].Humanize()
             };
 
             return await RegisterNewUserAsync(user, password, requireConfirmEmail);

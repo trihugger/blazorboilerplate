@@ -90,6 +90,12 @@ namespace BlazorBoilerplate.Server.Managers
                 if (userNameClaim == null)
                     userNameClaim = userEmailClaim;
 
+                //For Okta provider for custom username and email please change fields as appropriate
+                if (userNameClaim == null)
+                    userNameClaim = claims.FirstOrDefault(X => X.Type == "name");
+                if (userEmailClaim == null)
+                    userEmailClaim = claims.FirstOrDefault(X => X.Type == "preferred_username");
+
                 //get the user by Email (we are forcing it to be unique)
                 var user = await _userManager.FindByEmailAsync(userEmailClaim.Value);
 

@@ -27,6 +27,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authentication.OAuth;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -44,6 +45,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json.Serialization;
 using NSwag;
 using NSwag.AspNetCore;
@@ -349,6 +352,29 @@ namespace BlazorBoilerplate.Server
                     options.Events = new OAuthEvents()
                     {
                         OnRemoteFailure = HandleOnRemoteFailure
+                    };
+                });
+            }
+
+            if (Convert.ToBoolean(Configuration["ExternalAuthProviders:Okta:Enabled"] ?? "false"))
+            {
+                authBuilder.AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, "Okta", options =>
+                {
+                    options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
+                    options.Authority = Configuration["ExternalAuthProviders:Okta:Domain"];
+                    options.RequireHttpsMetadata = true;
+                    options.ClientId = Configuration["ExternalAuthProviders:Okta:ClientId"];
+                    options.ClientSecret = Configuration["ExternalAuthProviders:Okta:ClientSecret"];
+                    options.ResponseType = OpenIdConnectResponseType.Code;
+                    options.GetClaimsFromUserInfoEndpoint = true;
+                    options.Scope.Add("openid");
+                    options.Scope.Add("profile");
+                    options.SaveTokens = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        NameClaimType = "name",
+                        RoleClaimType = "groups",
+                        ValidateIssuer = true
                     };
                 });
             }
