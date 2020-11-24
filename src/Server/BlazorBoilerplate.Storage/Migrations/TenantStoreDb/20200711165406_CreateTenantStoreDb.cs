@@ -23,7 +23,7 @@ namespace BlazorBoilerplate.Storage.Migrations.TenantStoreDb
             migrationBuilder.InsertData(
                 table: "TenantInfo",
                 columns: new[] { "Id", "ConnectionString", "Identifier", "Name" },
-                values: new object[] { "Master", null, "Master", "Master" });
+                values: new object[] { "Master", null, "localhost", "Master" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_TenantInfo_Identifier",

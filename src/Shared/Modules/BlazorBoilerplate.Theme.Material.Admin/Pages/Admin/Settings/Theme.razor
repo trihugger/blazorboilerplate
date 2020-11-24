@@ -1,0 +1,441 @@
+﻿@page "/admin/settings/theme"
+@attribute [Authorize]
+@using System.IO;
+@using System.Diagnostics;
+@using BlazorColorPicker
+@inherits SettingsBase
+@inject HttpClient httpClient
+@inject IStringLocalizer<Global> L
+@inject IMatToaster matToaster
+
+<MatH4>@L["Theme"]</MatH4>
+
+@if (settings == null)
+{
+    <LoadingBackground ShowLogoBox="true">
+        <label>@L["Loading"]</label>
+    </LoadingBackground>
+}
+else
+{
+    <EditForm Model="@settings">
+        <FluentValidationValidator />
+        <ValidationSummary />
+        <fieldset>
+            <MatTabGroup>
+                <MatTab Label="General Colors">
+                    <div class="mat-layout-grid">
+                        <div class="mat-layout-grid-inner">
+                            <div class="mat-layout-grid-cell">
+                                <div class="form-group">
+                                    <button class="btn btn-primary" Style="width:250px;text-align:left;" @onclick="OpenpcModal">
+                                        <div style="background-color:@primaryColor" class="buttonColor"></div> Select Primary Color
+                                    </button>
+                                    <ColorPicker Title="Primary Color" IsOpened="ispcOpened" Closed="updateEventAll" MyColor="@settings[SettingKey.ThemeConfiguration_PrimaryColor].Value"></ColorPicker>
+                                    <MatTextField @bind-Value="@settings[SettingKey.ThemeConfiguration_PrimaryColor].Value" HelperTextPersistent="true" Required="true" ReadOnly="true" />
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" Style="width:250px;text-align:left;" @onclick="OpenscModal">
+                                        <div style="background-color:@secondaryColor" class="buttonColor"></div> Select Secondary Color
+                                    </button>
+                                    <ColorPicker Title="Secondary Color" IsOpened="isscOpened" Closed="updateEventAll" MyColor="@settings[SettingKey.ThemeConfiguration_SecondaryColor].Value"></ColorPicker>
+                                    <MatTextField @bind-Value="@settings[SettingKey.ThemeConfiguration_SecondaryColor].Value" HelperTextPersistent="true" Required="true" ReadOnly="true" />
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" Style="width:250px;text-align:left;" @onclick="OpenopcModal">
+                                        <div style="background-color:@onprimaryColor" class="buttonColor"></div> Select On Primary Color
+                                    </button>
+                                    <ColorPicker Title="On Primary Color" IsOpened="isopcOpened" Closed="updateEventAll" MyColor="@settings[SettingKey.ThemeConfiguration_OnPrimaryColor].Value"></ColorPicker>
+                                    <MatTextField @bind-Value="@settings[SettingKey.ThemeConfiguration_OnPrimaryColor].Value" HelperTextPersistent="true" Required="true" ReadOnly="true" />
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" Style="width:250px;text-align:left;" @onclick="OpenoscModal">
+                                        <div style="background-color:@onsecondaryColor" class="buttonColor"></div> Select On Secondary Color
+                                    </button>
+                                    <ColorPicker Title="On Secondary Color" IsOpened="isoscOpened" Closed="updateEventAll" MyColor="@settings[SettingKey.ThemeConfiguration_OnSecondaryColor].Value"></ColorPicker>
+                                    <MatTextField @bind-Value="@settings[SettingKey.ThemeConfiguration_OnSecondaryColor].Value" HelperTextPersistent="true" Required="true" ReadOnly="true" />
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" Style="width:250px;text-align:left;" @onclick="OpenbcModal">
+                                        <div style="background-color:@backgroundColor" class="buttonColor"></div> Select Background Color
+                                    </button>
+                                    <ColorPicker Title="Background Color" IsOpened="isbcOpened" Closed="updateEventAll" MyColor="@settings[SettingKey.ThemeConfiguration_Background].Value"></ColorPicker>
+                                    <MatTextField @bind-Value="@settings[SettingKey.ThemeConfiguration_Background].Value" HelperTextPersistent="true" Required="true" ReadOnly="true" />
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" Style="width:250px;text-align:left;" @onclick="OpensModal">
+                                        <div style="background-color:@surfaceColor" class="buttonColor"></div> Select Surface Color
+                                    </button>
+                                    <ColorPicker Title="Surface Color" IsOpened="issOpened" Closed="updateEventAll" MyColor="@settings[SettingKey.ThemeConfiguration_Surface].Value"></ColorPicker>
+                                    <MatTextField @bind-Value="@settings[SettingKey.ThemeConfiguration_Surface].Value" HelperTextPersistent="true" Required="true" ReadOnly="true" />
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-primary" Style="width:250px;text-align:left;" @onclick="OpenosModal">
+                                        <div style="background-color:@onsurfaceColor" class="buttonColor"></div> Select On Surface Color
+                                    </button>
+                                    <ColorPicker Title="On Surface Color" IsOpened="isosOpened" Closed="updateEventAll" MyColor="@settings[SettingKey.ThemeConfiguration_OnSurface].Value"></ColorPicker>
+                                    <MatTextField @bind-Value="@settings[SettingKey.ThemeConfiguration_OnSurface].Value" HelperTextPersistent="true" Required="true" ReadOnly="true" />
+                                </div>
+                            </div>
+                            <div class="mat-layout-grid-cell">
+                                <MatThemeProvider Theme="@theme2">
+                                    <MatH5>Example</MatH5>
+                                    <div class="mat-blazor-demo-theme-app-row">
+                                        <MatButton Icon="favorite">Text</MatButton>
+                                        <MatButton Raised="true" Icon="favorite">Raised</MatButton>
+                                        <MatButton Unelevated="true" Icon="favorite">Unelevated</MatButton>
+                                        <MatButton Outlined="true" Icon="favorite">Outlined</MatButton>
+                                        <MatButton Dense="true" Icon="favorite">Dense</MatButton>
+                                    </div>
+                                    <div>
+                                        <MatCheckbox @bind-Value="@checked1" Label="@(getLabel(checked1))"></MatCheckbox>
+                                    </div>
+                                    <div>
+                                        <MatCheckbox @bind-Value="@checked2" Label="@(getLabel(checked2))"></MatCheckbox>
+                                    </div>
+                                    <div>
+                                        <MatCheckbox @bind-Value="@checked1" Disabled="true" Label="Disabled"></MatCheckbox>
+                                    </div>
+                                    <div>
+                                        <MatCheckbox @bind-Value="@checked2">Inline Label</MatCheckbox>
+                                    </div>
+
+                                    <div>
+                                        <MatCheckbox @bind-Value="@checked3" Indeterminate="true">Indeterminate</MatCheckbox>
+                                        <MatButton OnClick="@(_ => { checked3 = null; })">Clear</MatButton>
+                                    </div>
+                                    <div>
+                                        <p>
+                                            <MatDatePicker @bind-Value="@Date1"></MatDatePicker>
+                                        </p>
+                                        <MatButton OnClick="@(_ => { Date1 = DateTime.Now; })">Now</MatButton>
+                                        <MatButton OnClick="@(_ => { Date1 = null; })">Empty</MatButton>
+                                        <span>@(Date1.HasValue ? Date1.Value.ToLocalTime().ToString() : "")</span>
+                                    </div>
+                                    <div>
+                                        <MatRadioGroup @bind-Value="@Val1" TValue="string">
+                                            <MatRadioButton Value="@string.Empty" TValue="string">Default</MatRadioButton>
+                                            <MatRadioButton Value="@("f")" Label="Female" TValue="string"></MatRadioButton>
+                                            <MatRadioButton Value="@("m")" TValue="string">Male</MatRadioButton>
+                                            <MatRadioButton Value="@("d")" Disabled="true" TValue="string">Disabled</MatRadioButton>
+                                        </MatRadioGroup>
+                                    </div>
+                                    <div>
+                                        <MatSelect Label="Pick a Food Group" @bind-Value="@intValue">
+                                            <MatOption TValue="int" Value="0"></MatOption>
+                                            <MatOption TValue="int" Value="1">Bread, Cereal, Rice, and Pasta</MatOption>
+                                            <MatOption TValue="int" Value="2">Vegetables</MatOption>
+                                            <MatOption TValue="int" Value="3">Fruit</MatOption>
+                                        </MatSelect>
+                                    </div>
+                                    <div>
+                                        <MatSlider @bind-Value="@Val"></MatSlider>
+                                    </div>
+                                    <div>
+                                        <MatSlideToggle TValue="bool" @bind-Value="@slideVal" Label="off/on"></MatSlideToggle>
+                                    </div>
+                                    <div>
+                                        <MatProgressBar Indeterminate="true"></MatProgressBar>
+                                    </div>
+                                    <div>
+                                        <ol>
+                                            <li>
+                                                <MatTextField Label="What's your name?" @bind-Value="@name"></MatTextField>
+                                            </li>
+                                            <li>
+                                                <MatButton OnClick="@OpenDialog" Raised="true">Pick one</MatButton>
+                                            </li>
+                                            @if (animal != null)
+                                            {
+                                                <li>You chose: @animal</li>
+                                            }
+                                        </ol>
+                                        <MatDialog @bind-IsOpen="@dialogIsOpen">
+                                            <MatDialogTitle>Hi @name</MatDialogTitle>
+                                            <MatDialogContent>
+                                                <p>What's your favorite animal?</p>
+                                                <MatTextField @bind-Value="@dialogAnimal"></MatTextField>
+                                            </MatDialogContent>
+                                            <MatDialogActions>
+                                                <MatButton OnClick="@(e => { dialogIsOpen = false; })">No Thanks</MatButton>
+                                                <MatButton OnClick="@OkClick">OK</MatButton>
+                                            </MatDialogActions>
+                                        </MatDialog>
+                                    </div>
+                                </MatThemeProvider>
+                            </div>
+                        </div>
+                    </div>
+                </MatTab>
+                <MatTab Label="Navigation Bar">
+                    <div class="form-group">
+                        <button class="btn btn-primary" Style="width:250px;text-align:left;" @onclick="OpennpcModal">
+                            <div style="background-color:@navprimaryColor" class="buttonColor"></div> Select Nav Primary Color
+                        </button>
+                        <ColorPicker Title="Primary Color" IsOpened="isnpcOpened" Closed="updateEventAll" MyColor="@settings[SettingKey.ThemeConfiguration_NavPrimaryColor].Value"></ColorPicker>
+                        <MatTextField @bind-Value="@settings[SettingKey.ThemeConfiguration_NavPrimaryColor].Value" HelperTextPersistent="true" Required="true" ReadOnly="true" />
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-primary" Style="width:250px;text-align:left;" @onclick="OpennscModal">
+                            <div style="background-color:@navsecondaryColor" class="buttonColor"></div> Select Nav Secondary Color
+                        </button>
+                        <ColorPicker Title="Primary Color" IsOpened="isnscOpened" Closed="updateEventAll" MyColor="@settings[SettingKey.ThemeConfiguration_NavSecondaryColor].Value"></ColorPicker>
+                        <MatTextField @bind-Value="@settings[SettingKey.ThemeConfiguration_NavSecondaryColor].Value" HelperTextPersistent="true" Required="true" ReadOnly="true" />
+                    </div>
+                    <div class="form-group">
+                        <MatTextField @bind-Value="@settings[SettingKey.ThemeConfiguration_NavOrientation].Value" Label="Nav Orientation" Required="true"></MatTextField>
+                    </div>
+                    <div class="form-group">
+                        <MatTextField @bind-Value="@settings[SettingKey.ThemeConfiguration_NavSplit].Value" Label="Nav Split" Required="true"></MatTextField>
+                    </div>
+                </MatTab>
+            </MatTabGroup>
+        </fieldset>
+    </EditForm>
+
+    <MatButton OnClick="@(()=>apiClient.CancelChanges())">@L["Cancel"]</MatButton>
+    <MatButton OnClick="@SaveChanges">@L["Save"]</MatButton>
+}
+
+@code {
+    #region ColorPicker Variables
+    bool isOpened = false;
+    bool ispcOpened = false;
+    bool isscOpened = false;
+    bool isopcOpened = false;
+    bool isoscOpened = false;
+    bool istpcOpened = false;
+    bool istscOpened = false;
+    bool isbcOpened = false;
+    bool issOpened = false;
+    bool isosOpened = false;
+    bool isnpcOpened = false;
+    bool isnscOpened = false;
+    #endregion
+
+    #region ColorPicker Functions
+    void OpenpcModal()
+    {
+        ispcOpened = true;
+    }
+    void OpenscModal()
+    {
+        isscOpened = true;
+    }
+    void OpenopcModal()
+    {
+        isopcOpened = true;
+    }
+    void OpenoscModal()
+    {
+        isoscOpened = true;
+    }
+    void OpentpcModal()
+    {
+        istpcOpened = true;
+    }
+    void OpentscModal()
+    {
+        istscOpened = true;
+    }
+    void OpenbcModal()
+    {
+        isbcOpened = true;
+    }
+    void OpensModal()
+    {
+        issOpened = true;
+    }
+    void OpenosModal()
+    {
+        isosOpened = true;
+    }
+    void OpennpcModal()
+    {
+        isnpcOpened = true;
+    }
+    void OpennscModal()
+    {
+        isnscOpened = true;
+    }
+
+    void updateEventAll(string value)
+    {
+        if (ispcOpened)
+        {
+            primaryColor = value;
+            settings[SettingKey.ThemeConfiguration_PrimaryColor].Value = value;
+            ispcOpened = false;
+        }
+        else if (isscOpened)
+        {
+            secondaryColor = value;
+            settings[SettingKey.ThemeConfiguration_SecondaryColor].Value = value;
+            isscOpened = false;
+        }
+        else if (isopcOpened)
+        {
+            onprimaryColor = value;
+            settings[SettingKey.ThemeConfiguration_OnPrimaryColor].Value = value;
+            isopcOpened = false;
+        }
+        else if (isoscOpened)
+        {
+            onsecondaryColor = value;
+            settings[SettingKey.ThemeConfiguration_OnSecondaryColor].Value = value;
+            isoscOpened = false;
+        }
+        else if (istpcOpened)
+        {
+            textprimaryColor = value;
+            settings[SettingKey.ThemeConfiguration_TextPrimaryColor].Value = value;
+            istpcOpened = false;
+        }
+        else if (istscOpened)
+        {
+            textsecondaryColor = value;
+            settings[SettingKey.ThemeConfiguration_TextSecondaryColor].Value = value;
+            istscOpened = false;
+        }
+        else if (isbcOpened)
+        {
+            backgroundColor = value;
+            settings[SettingKey.ThemeConfiguration_Background].Value = value;
+            isbcOpened = false;
+        }
+        else if (issOpened)
+        {
+            surfaceColor = value;
+            settings[SettingKey.ThemeConfiguration_Surface].Value = value;
+            issOpened = false;
+        }
+        else if (isosOpened)
+        {
+            onsurfaceColor = value;
+            settings[SettingKey.ThemeConfiguration_OnSurface].Value = value;
+            isosOpened = false;
+        }
+        else if (isnpcOpened)
+        {
+            navprimaryColor = value;
+            settings[SettingKey.ThemeConfiguration_NavPrimaryColor].Value = value;
+            isnpcOpened = false;
+        }
+        else if (isnscOpened)
+        {
+            navsecondaryColor = value;
+            settings[SettingKey.ThemeConfiguration_NavSecondaryColor].Value = value;
+            isnscOpened = false;
+        }
+
+        //Update theme with newly selected colors to refresh examples
+        theme2.Primary = primaryColor;
+        theme2.Secondary = secondaryColor;
+        theme2.OnPrimary = onprimaryColor;
+        theme2.OnSecondary = onsecondaryColor;
+        theme2.Background = backgroundColor;
+        theme2.Surface = surfaceColor;
+        theme2.OnSurface = onsurfaceColor;
+    }
+
+    #endregion
+
+    #region Theme Configurations
+    //Color Variable
+    static string primaryColor = "";
+    static string secondaryColor = "";
+    static string onprimaryColor = "";
+    static string onsecondaryColor = "";
+    static string textprimaryColor = "";
+    static string textsecondaryColor = "";
+    static string backgroundColor = "";
+    static string onsurfaceColor = "";
+    static string surfaceColor = "";
+    static string navprimaryColor = "";
+    static string navsecondaryColor = "";
+
+    //Theme for preview and Exemplification
+    MatTheme theme2 = new MatTheme()
+    {
+        Primary = primaryColor,
+        Secondary = secondaryColor,
+        OnPrimary = onprimaryColor,
+        OnSecondary = onsecondaryColor,
+        Background = backgroundColor,
+        Surface = surfaceColor,
+        OnSurface = onsurfaceColor
+    };
+    #endregion
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadSettings("ThemeConfiguration_");
+
+        //Load all colors from the Settings values to our Preview Theme Colors
+        primaryColor = settings[SettingKey.ThemeConfiguration_PrimaryColor].Value;
+        secondaryColor = settings[SettingKey.ThemeConfiguration_SecondaryColor].Value;
+        onprimaryColor = settings[SettingKey.ThemeConfiguration_OnPrimaryColor].Value;
+        onsecondaryColor = settings[SettingKey.ThemeConfiguration_OnSecondaryColor].Value;
+        textprimaryColor = settings[SettingKey.ThemeConfiguration_TextPrimaryColor].Value;
+        textsecondaryColor = settings[SettingKey.ThemeConfiguration_TextSecondaryColor].Value;
+        backgroundColor = settings[SettingKey.ThemeConfiguration_Background].Value;
+        surfaceColor = settings[SettingKey.ThemeConfiguration_Surface].Value;
+        onsurfaceColor = settings[SettingKey.ThemeConfiguration_OnSurface].Value;
+        navprimaryColor = settings[SettingKey.ThemeConfiguration_NavPrimaryColor].Value;
+        navsecondaryColor = settings[SettingKey.ThemeConfiguration_NavSecondaryColor].Value;
+    }
+
+    #region Tab Functionality
+    public int tabIndex = 0;
+
+    void ChangeTab(MouseEventArgs e)
+    {
+        tabIndex = tabIndex < 3 ? tabIndex + 1 : 0;
+    }
+    #endregion
+
+    #region Preview Functions and Variables
+    bool checked1 = true;
+    bool checked2 = false;
+    bool? checked3 = null;
+
+    string getLabel(bool val)
+    {
+        return !val ? "Check me!" : "Uncheck me?";
+    }
+
+    public DateTime? Date1 { get; set; } = DateTime.Now.AddDays(-10);
+    protected string Val1;
+    int intValue;
+
+    public decimal Val
+    {
+        get => _val;
+        set
+        {
+            _val = value;
+            this.StateHasChanged();
+        }
+    }
+
+    public bool slideVal = true;
+
+    private decimal _val = 0;
+    bool dialogIsOpen = false;
+    string name = null;
+    string animal = null;
+    string dialogAnimal = null;
+
+    void OpenDialog()
+    {
+        dialogAnimal = null;
+        dialogIsOpen = true;
+    }
+
+    void OkClick()
+    {
+        animal = dialogAnimal;
+        dialogIsOpen = false;
+    }
+    #endregion
+}

@@ -17,14 +17,13 @@ namespace BlazorBoilerplate.Storage
         public static IServiceCollection RegisterStorage(this IServiceCollection services, IConfiguration configuration)
         {
             #region Multitenancy
-
             services.AddDbContext<TenantStoreDbContext>(builder => GetDbContextOptions<TenantStoreDbContext>(builder, configuration));
 
             services.AddMultiTenant<TenantInfo>()
                 .WithHostStrategy("__tenant__")
-                .WithEFCoreStore<TenantStoreDbContext, TenantInfo>()
-                .WithStaticStrategy(Settings.DefaultTenantId);
-
+                .WithEFCoreStore<TenantStoreDbContext, TenantInfo>();
+                //See Utils\Scripts\SetupTenantForDevelopment.txt for instructions how to test tenants
+                //.WithStaticStrategy(Settings.DefaultTenantId);
             #endregion Multitenancy
 
             services.AddDbContext<ApplicationDbContext>(builder => GetDbContextOptions<ApplicationDbContext>(builder, configuration));

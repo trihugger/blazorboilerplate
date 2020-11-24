@@ -1,5 +1,5 @@
 @page "/account/login"
-
+@using BlazorBoilerplate.Shared.Dto.Admin
 @layout LoginLayout
 @inject NavigationManager navigationManager
 @inject AuthenticationStateProvider authStateProvider
@@ -8,6 +8,7 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime js
 @inject IStringLocalizer<Global> L
+@inject HttpClient Http
 
 <AuthorizeView Context="AuthorizeContext">
     <Authorized>
@@ -29,7 +30,7 @@
                         <MatIconButton Icon="home" Class="float-left" Link="/" />
                     </div>
                     <div class="logo">
-                        <a href="/" title="@appState.AppName Home"><img src="_content/BlazorBoilerplate.Theme.Material/images/logo.svg" style="width:100px;" title="@appState.AppName Home" alt="@appState.AppName" /><br />@appState.AppName</a>
+                        <a href="/" title="@appState.AppName Home"><img src="../images/@(tenantFolder)/logo.svg" style="width:100px;" title="@appState.AppName Home" alt="@appState.AppName" /><br />@appState.AppName</a>
                         <br />
                         <h4>@L["Log in"]</h4>
                     </div>
@@ -85,7 +86,7 @@
                     </div>}
                 <div class="logo">
                     @if (!loginViewModel.EnableLocalLogin)
-                    {<a href="/" title="@appState.AppName Home"><img src="_content/BlazorBoilerplate.Theme.Material/images/logo.svg" style="width:100px;" title="@appState.AppName Home" alt="@appState.AppName" /><br />@appState.AppName</a>
+                    {<a href="/" title="@appState.AppName Home"><img src="../images/@(tenantFolder)/logo.svg" style="width:100px;" title="@appState.AppName Home" alt="@appState.AppName" /><br />@appState.AppName</a>
                     <br />}
                     <h4>@L["Sign in with"]</h4>
                 </div>
@@ -127,6 +128,9 @@
     </NotAuthorized>
 </AuthorizeView>
 @code {
+
+    public TenantDto tenant { get; set; } = new TenantDto();
+    public string tenantFolder { get; set; }
 
     string navigateTo = null;
     IdentityAuthenticationStateProvider identityAuthenticationStateProvider;
@@ -175,7 +179,6 @@
     [CascadingParameter]
     Task<AuthenticationState> authenticationStateTask { get; set; }
 
-
     protected override async Task OnParametersSetAsync()
     {
         if (navigationManager.IsWebAssembly())
@@ -184,6 +187,13 @@
 
             if (user.Identity.IsAuthenticated && navigateTo != null)
                 navigationManager.NavigateTo(navigateTo);
+        }
+
+        var apiResponse = await Http.GetNewtonsoftJsonAsync<ApiResponseDto<TenantDto>>("api/admin/tenant");
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            tenant = apiResponse.Result;
+            tenantFolder = tenant.Id;
         }
     }
 

@@ -48,7 +48,7 @@ namespace BlazorBoilerplate.Storage.Migrations.TenantStoreDb
                         new
                         {
                             Id = "Master",
-                            Identifier = "Master",
+                            Identifier = "localhost",
                             Name = "Master"
                         });
                 });

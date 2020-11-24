@@ -6,6 +6,7 @@ namespace BlazorBoilerplate.Theme.Material.TagHelpers
 {
     public class AppTagHelperComponent : TagHelperComponent
     {
+
         public override Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
             var path = typeof(Module).Namespace;
@@ -20,7 +21,7 @@ namespace BlazorBoilerplate.Theme.Material.TagHelpers
  </div>
 </div>
 <div class=""loading-container"">
- <img src=""_content/{path}/images/logo.svg"" alt=""Loading"" title=""Loading BlazorBoilerplate"" /><br />
+ <img src=""../images/logo.svg"" alt=""Loading"" title=""Loading Coastal Hub"" /><br />
   Loading BlazorBoilerplate WebAssemblies ...
 </div>");
             }

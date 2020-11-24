@@ -1,4 +1,5 @@
-﻿using BlazorBoilerplate.Shared.Dto.Db;
+﻿using BlazorBoilerplate.Shared.Dto.Admin;
+using BlazorBoilerplate.Shared.Dto.Db;
 using BlazorBoilerplate.Shared.Interfaces;
 using Breeze.Sharp;
 using Microsoft.Extensions.Logging;

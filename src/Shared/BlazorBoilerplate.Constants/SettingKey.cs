@@ -26,5 +26,20 @@
         EmailConfiguration_ImapUsername,
         EmailConfiguration_ImapPassword,
         EmailConfiguration_ImapUseSSL,
+
+        ThemeConfiguration_PrimaryColor,
+        ThemeConfiguration_SecondaryColor,
+        ThemeConfiguration_OnPrimaryColor,
+        ThemeConfiguration_OnSecondaryColor,
+        ThemeConfiguration_TextPrimaryColor,
+        ThemeConfiguration_TextSecondaryColor,
+        ThemeConfiguration_Background,
+        ThemeConfiguration_Surface,
+        ThemeConfiguration_OnSurface,
+        ThemeConfiguration_NavPrimaryColor,
+        ThemeConfiguration_NavSecondaryColor,
+        ThemeConfiguration_NavPaintType,
+        ThemeConfiguration_NavOrientation,
+        ThemeConfiguration_NavSplit
     }
 }
