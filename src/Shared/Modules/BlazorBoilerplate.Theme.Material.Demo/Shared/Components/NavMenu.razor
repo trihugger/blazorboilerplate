@@ -7,27 +7,6 @@
     <MatIcon>home</MatIcon> <span class="miniHover">@L["AppNavHome"]</span>
 </MatNavItem>
 
-<MatNavItem Href="@navigationManager.ToAbsoluteUri("todo_list").AbsoluteUri">
-    <MatIcon>list_alt</MatIcon> <span class="miniHover">@L["TodoNav"]</span>
-</MatNavItem>
-
-<MatNavSubMenu>
-    <MatNavSubMenuHeader>
-        <MatNavItem AllowSelection="false">
-            <MatIcon>stars</MatIcon><span class="miniHover"> @L["AppNavFeatures"]</span>
-        </MatNavItem>
-    </MatNavSubMenuHeader>
-    <MatNavSubMenuList>
-        <MatNavItem Href="@navigationManager.ToAbsoluteUri("drag_and_drop").AbsoluteUri">
-            <MatIcon>touch_app</MatIcon> <span class="miniHover">@L["AppNavDragAndDrop"]</span>
-        </MatNavItem>
-    </MatNavSubMenuList>
-</MatNavSubMenu>
-
-<MatNavItem Href="@navigationManager.ToAbsoluteUri("dashboard").AbsoluteUri" Disabled="@(!IsLoggedIn)">
-    <MatIcon>bar_chart</MatIcon> <span class="miniHover">@L["Dashboard"]</span>
-</MatNavItem>
-
 <MatNavSubMenu>
     <MatNavSubMenuHeader>
         <MatNavItem AllowSelection="false" Disabled="@(!IsLoggedIn)">
@@ -45,13 +24,10 @@
     </MatNavSubMenuList>
 </MatNavSubMenu>
 
-<MatNavItem Href="@navigationManager.ToAbsoluteUri("forum").AbsoluteUri" Disabled="@(!IsLoggedIn)">
+@*<MatNavItem Href="@navigationManager.ToAbsoluteUri("forum").AbsoluteUri" Disabled="@(!IsLoggedIn)">
     <MatIcon>forum</MatIcon> <span class="miniHover">@L["AppNavForum"]</span>
 </MatNavItem>
-
-<MatNavItem Href="@navigationManager.ToAbsoluteUri("sponsors").AbsoluteUri">
-    <MatIcon>attach_money</MatIcon> <span class="miniHover">@L["AppNavSponsors"]</span>
-</MatNavItem>
+*@
 
 @code {
 

@@ -1,16 +1,38 @@
 ﻿@implements IDynamicComponent
 
-<DonateButton />
-<MatTooltip Tooltip="Github Repository">
-    <MatIconButton Link="https://github.com/enkodellc/blazorboilerplate" RefBack="@context"><i class="fa fa-github" aria-hidden="true"></i></MatIconButton>
-</MatTooltip>
-<MatTooltip Tooltip="Admin">
-    <MatIconButton Link="/admin" RefBack="@context"><i class="fa fa-gear" aria-hidden="true"></i></MatIconButton>
-</MatTooltip>
+@* TODO Add check for IsAdmin to hide Admin M *@
+
+@if(IsAdmin){
+    <MatTooltip Tooltip="Admin">
+        <MatIconButton Link="/admin" RefBack="@context"><i class="fa fa-gear" aria-hidden="true"></i></MatIconButton>
+    </MatTooltip>    
+}
 <SelectCulture />
 <Login />
 
 @code {
     public int Order { get => 1; }
     public string IntoComponent { get => "TopRightBarSection"; }
+
+    public bool IsLoggedIn = false;
+    public bool IsAdmin = false;
+
+    [CascadingParameter]
+    Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        IsLoggedIn = false;
+        var user = (await authenticationStateTask).User;
+
+        if (user.Identity.IsAuthenticated)
+        {
+            IsLoggedIn = true;
+        }
+
+        if (user.IsInRole(DefaultRoleNames.Administrator))
+        {
+            IsAdmin = true;
+        }
+    }
 }

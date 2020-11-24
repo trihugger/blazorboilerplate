@@ -18,6 +18,7 @@ using BlazorBoilerplate.Shared.Services;
 using BlazorBoilerplate.Shared.Validators.Db;
 using BlazorBoilerplate.Storage;
 using BlazorBoilerplate.Storage.Mapping;
+using BlazorBoilerplate.Theme.Material.TagHelpers;
 using Breeze.AspNetCore;
 using Breeze.Core;
 using FluentValidation.AspNetCore;
@@ -39,6 +40,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.Azure.KeyVault;
 using Microsoft.Azure.Services.AppAuthentication;
 using Microsoft.EntityFrameworkCore;
@@ -510,7 +512,7 @@ namespace BlazorBoilerplate.Server
             if (_enableAPIDoc)
                 services.AddOpenApiDocument(document =>
                 {
-                    document.Title = "BlazorBoilerplate API";
+                    document.Title = "CoastalHub API";
                     document.Version = typeof(Startup).GetTypeInfo().Assembly.GetName().Version.ToString();
                     document.AddSecurity("bearer", Enumerable.Empty<string>(), new OpenApiSecurityScheme
                     {
@@ -616,6 +618,10 @@ namespace BlazorBoilerplate.Server
                 foreach (var service in services)
                     Log.Logger.Debug($"\n\tService: {service.ServiceType.FullName}\n\tLifetime: {service.Lifetime}\n\tInstance: {service.ImplementationType?.FullName}");
             }
+
+            #region THEME
+            services.AddTransient<ITagHelperComponent, ThemeTagHelperComponent>();
+            #endregion
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

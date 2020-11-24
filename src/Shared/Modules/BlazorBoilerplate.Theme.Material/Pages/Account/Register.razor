@@ -1,17 +1,18 @@
 ﻿@page "/account/register"
-
 @layout LoginLayout
 @inject NavigationManager navigationManager
 @inject AuthenticationStateProvider authStateProvider
 @inject IStringLocalizer<Global> L
 @inject IMatToaster matToaster
+@using BlazorBoilerplate.Shared.Dto.Admin
+@inject HttpClient Http
 
 <MatCard>
     <div class="hidden-mdc-down">
         <MatIconButton Icon="home" Class="float-left" Link="/" />
     </div>
     <div class="logo">
-        <img src="_content/BlazorBoilerplate.Theme.Material/images/logo.svg" style="width:100px;" /><br />BlazorBoilerplate
+        <img src="../images/@(tenantFolder)/logo.svg" style="width:100px;" /><br />BlazorBoilerplate
         <br />
         <h4>@L["Registration"]</h4>
     </div>
@@ -44,6 +45,19 @@
 
 @code {
     RegisterViewModel registerViewModel { get; set; } = new RegisterViewModel();
+
+    public TenantDto tenant { get; set; } = new TenantDto();
+    public string tenantFolder { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var apiResponse = await Http.GetNewtonsoftJsonAsync<ApiResponseDto<TenantDto>>("api/admin/tenant");
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            tenant = apiResponse.Result;
+            tenantFolder = tenant.Id;
+        }
+    }
 
     async Task RegisterUser()
     {

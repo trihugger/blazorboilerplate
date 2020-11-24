@@ -23,13 +23,13 @@ namespace BlazorBoilerplate.Server
 
             try
             {
-                Log.Information("Starting BlazorBoilerplate web server host");
+                Log.Information("Starting CoastalHub web server host");
                 CreateHostBuilder(args).Build().Run();
                 return 0;
             }
             catch (Exception ex)
             {
-                Log.Fatal(ex, "BlazorBoilerplate Host terminated unexpectedly");
+                Log.Fatal(ex, "CoastalHub Host terminated unexpectedly");
                 return 1;
             }
         }

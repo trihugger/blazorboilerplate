@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using System;
 using System.Threading.Tasks;
+using BlazorBoilerplate.Shared.Models;
 
 namespace BlazorBoilerplate.Theme.Material.TagHelpers
 {
@@ -21,6 +22,34 @@ namespace BlazorBoilerplate.Theme.Material.TagHelpers
 <link href=""_content/{path}/fonts/roboto/roboto.css"" rel=""stylesheet"" />
 <link href=""_content/MatBlazor/dist/matBlazor.css"" rel=""stylesheet"" />
 <link href=""_content/{path}/css/site.css"" rel=""stylesheet"" />");
+                //Theme White-labelling
+                output.PostContent.AppendHtml(@$"<style>        
+                    :root {{
+                        --mdc-theme-primary: var(--PrimaryColor);
+                        --mdc-theme-secondary: var(--SecondaryColor);
+                        --mdc-theme-text-primary: var(--OnPrimaryColor);
+                        --mdc-theme-text-secondary: var(--OnSecondayColor);
+                        --mdc-theme-text-on-primary: var(--OnPrimaryColor);
+                        --mdc-theme-text-on-secondary: var(--OnSecondaryColor);}}
+
+                .triangle-container {{ background-color: var(--PrimaryColor); }}
+                .mdc-top-app-bar__section .mdc-icon-button i {{ color: var(--PrimaryColor); }}
+                .drawer-logo {{
+                    background-color: var(--BackgroundColor);
+                    color: var(--TextPrimaryColor);
+                }}
+                .mdc-dialog__title {{
+                    color: #fff !important;
+                    background-color: var(--BackgroundColor);
+                }}
+                .mdc-drawer__content {{
+                    background-image: linear-gradient(var(--NavOrientation), var(--NavPrimaryColor) 0%, var(--NavSecondaryColor) var(--NavSplit));
+                    color: var(--onPrimaryColor) !important;
+                }}
+                    .mdc-dialog .mdc-dialog__surface {{ max-width: 90vw; align-self:center;}}
+                    .mdc-drawer .mdc-list-item--disabled {{ color: var(--OnSecondaryColor) !important; opacity: 50%; }}
+                    .mdc-drawer .mdc-list-item {{ color: var(--OnPrimaryColor) !important; }}
+                </style>");
             }
             else if (string.Equals(context.TagName, "body", StringComparison.OrdinalIgnoreCase))
             {

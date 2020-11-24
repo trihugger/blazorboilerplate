@@ -1,0 +1,16 @@
+Add the tenant identifier to the hosts file.
+
+In windows find your hosts file in C:\Windows\System32\Drivers\etc\ folder
+
+1) Add the following lists at the end fo the file:
+
+127.0.0.1       tenant1.local
+127.0.0.1       tenant2.local
+
+2) Save and exit, then from the command line execute the following command
+
+ipconfig /flushdns
+
+You computer will now recognize tenant1.local and tenant2.local as alternative for your tenant test sites. 
+
+When you launch the site, feel free to replace localhost with any of the your new tenants urls to test it.

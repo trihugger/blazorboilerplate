@@ -3,6 +3,7 @@
 @using BlazorBoilerplate.Infrastructure.Server
 @using BlazorBoilerplate.Shared.Models
 @using BlazorBoilerplate.Shared.Providers
+@using BlazorColorPicker
 @using Microsoft.AspNetCore.Hosting
 @using Microsoft.AspNetCore.Localization
 @using System.Globalization
@@ -10,6 +11,7 @@
 @addTagHelper *, BlazorBoilerplate.Shared
 @inject IWebHostEnvironment env
 @inject ITenantSettings<MainConfiguration> mainConfiguration
+@inject ITenantSettings<ThemeConfiguration> themeConfiguration
 
 <!DOCTYPE html>
 <html lang="en">
@@ -17,20 +19,40 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="author" content="Enkodellc / Keith Fimreite, Giovanni Quarella">
-    <meta name="description" content="Blazor Boilerplate & Starter Kit - A real world Example ">
+    <meta name="author" content="Jeffrey Silva / Keith Fimreite, Giovanni Quarella">
+    <meta name="description" content="Coastal Hub - Custom Banking Solutions">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-touch-fullscreen" content="yes">
     @if (mainConfiguration.Value.Runtime == Shared.Dto.Db.BlazorRuntime.Server)
     {
-        <title>BlazorBoilerplate Starter Kit (Server)</title>
+        <title>CoastalHub (Server)</title>
     }
     else
     {
-        <title>BlazorBoilerplate Starter Kit (WASM)</title>
+        <title>CoastalHub (WASM)</title>
     }
+    <style>
+        :root {
+            --PrimaryColor: @themeConfiguration.Value.PrimaryColor;
+            --SecondaryColor: @themeConfiguration.Value.SecondaryColor;
+            --OnPrimaryColor: @themeConfiguration.Value.OnPrimaryColor;
+            --OnSecondaryColor: @themeConfiguration.Value.OnSecondaryColor;
+            --TextPrimaryColor: @themeConfiguration.Value.TextPrimaryColor;
+            --TextSecondaryColor: @themeConfiguration.Value.TextSecondaryColor;
+
+            --BackgroundColor: @themeConfiguration.Value.Background;
+            --SurfaceColor: @themeConfiguration.Value.Surface;
+            --OnSurfaceColor: @themeConfiguration.Value.OnSurface;
+
+            --NavPrimaryColor: @themeConfiguration.Value.NavPrimaryColor;
+            --NavSecondaryColor: @themeConfiguration.Value.NavSecondaryColor;
+            --NavOrientation: @(themeConfiguration.Value.NavOrientation.ToString() + "deg");
+            --NavSplit: @(themeConfiguration.Value.NavSplit.ToString() + "%");
+        }
+    </style>
     <base href="~/" />
     <link href="manifest.json" rel="manifest" />
+    <link href="_content/BlazorColorPicker/colorpicker.css" rel="stylesheet" />
 </head>
 <body>
     @{
@@ -81,5 +103,6 @@
     <script src="js/interop.js"></script>
     <!-- https://docs.microsoft.com/en-us/aspnet/core/blazor/progressive-web-app -->
     <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script src="_content/BlazorColorPicker/colorpicker.js"></script>
 </body>
 </html>

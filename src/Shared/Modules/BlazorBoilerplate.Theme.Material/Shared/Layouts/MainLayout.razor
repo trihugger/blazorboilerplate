@@ -2,12 +2,14 @@
 @inject NavigationManager navigationManager
 @inject AppState appState
 @inject IStringLocalizer<Global> L
+@using BlazorBoilerplate.Shared.Dto.Admin
+@inject HttpClient Http
 
 <MatDrawerContainer Style="width: 100vw; height: 100vh;" Class="@bbDrawerClass">
     <MatDrawer @bind-Opened="@_navMenuOpened">
         <header class="drawer-header">
             <div class="drawer-logo">
-                <img alt="@appState.AppName" class="logo-img" src="_content/BlazorBoilerplate.Theme.Material/images/logo-dark.svg" title="@appState.AppName">
+                <img alt="@appState.AppName" class="logo-img" src="../images/@(tenantFolder)/logo-dark.svg" title="@appState.AppName">
                 <a class="miniHover" href="/">@appState.AppName</a>
             </div>
             <UserProfile />
@@ -60,6 +62,19 @@
 
     [CascadingParameter]
     Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    public TenantDto tenant { get; set; } = new TenantDto();
+    public string tenantFolder { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var apiResponse = await Http.GetNewtonsoftJsonAsync<ApiResponseDto<TenantDto>>("api/admin/tenant");
+        if (apiResponse.StatusCode == Status200OK)
+        {
+            tenant = apiResponse.Result;
+            tenantFolder = tenant.Id;
+        }
+    }
 
     protected override async Task OnInitializedAsync()
     {
